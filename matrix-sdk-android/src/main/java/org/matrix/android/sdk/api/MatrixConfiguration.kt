@@ -89,4 +89,6 @@ data class MatrixConfiguration(
          * CustomEventTypesProvider to provide custom event types to the sdk which should be processed with internal events.
          */
         val customEventTypesProvider: CustomEventTypesProvider? = null,
+
+        val hideElement : Boolean = false
 )

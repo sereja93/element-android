@@ -166,7 +166,8 @@ import javax.inject.Singleton
                 clientPermalinkBaseUrl = mdmService.getData(MdmData.PermalinkBaseUrl),
                 syncConfig = SyncConfig(
                         syncFilterParams = SyncFilterParams(lazyLoadMembersForStateEvents = true, useThreadNotifications = true)
-                )
+                ),
+                hideElement =  BuildConfig.HIDE_ELEMENT
         )
     }
 

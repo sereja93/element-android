@@ -307,7 +307,7 @@ android {
         }
     }
 
-    flavorDimensions = ["store"]
+    flavorDimensions = ["store", "hideElement"]
 
     productFlavors {
         gplay {
@@ -330,6 +330,15 @@ android {
             buildConfigField "String", "FLAVOR_DESCRIPTION", "\"FDroid\""
         }
 
+        hideElementApp {
+            dimension "hideElement"
+            buildConfigField "boolean", "HIDE_ELEMENT", "true"
+        }
+
+        showElementApp {
+            dimension "hideElement"
+            buildConfigField "boolean", "HIDE_ELEMENT", "false"
+        }
     }
 
     variantFilter { variant ->
@@ -392,6 +401,8 @@ dependencies {
     }
     debugImplementation 'com.facebook.soloader:soloader:0.10.5'
     debugImplementation "com.kgurgul.flipper:flipper-realm-android:2.2.0"
+
+    hideElementAppImplementation project(':game')
 
     gplayImplementation "com.google.android.gms:play-services-location:21.0.1"
     // UnifiedPush gplay flavor only

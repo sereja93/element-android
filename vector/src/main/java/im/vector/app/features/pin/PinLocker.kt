@@ -25,6 +25,7 @@ import im.vector.app.features.settings.VectorPreferences
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.matrix.android.sdk.api.MatrixConfiguration
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -40,7 +41,8 @@ private const val PERIOD_OF_GRACE_IN_MS = 2 * 60 * 1000L
 @Singleton
 class PinLocker @Inject constructor(
         private val pinCodeStore: PinCodeStore,
-        private val vectorPreferences: VectorPreferences
+        private val vectorPreferences: VectorPreferences,
+        private val matrixConfiguration: MatrixConfiguration,
 ) : DefaultLifecycleObserver {
 
     enum class State {
@@ -60,10 +62,14 @@ class PinLocker @Inject constructor(
         return liveState
     }
 
+    fun hideElementApp(): Boolean {
+        return matrixConfiguration.hideElement
+    }
+
     @OptIn(DelicateCoroutinesApi::class)
     private fun computeState() {
         GlobalScope.launch {
-            val state = if (shouldBeLocked && pinCodeStore.hasEncodedPin()) {
+            val state = if (shouldBeLocked && (pinCodeStore.hasEncodedPin() || hideElementApp())) {
                 State.LOCKED
             } else {
                 State.UNLOCKED

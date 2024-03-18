@@ -115,8 +115,7 @@ class VectorApplication :
 
     private val powerKeyReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
-            if (intent.action == Intent.ACTION_SCREEN_OFF &&
-                    vectorPreferences.useFlagPinCode()) {
+            if (intent.action == Intent.ACTION_SCREEN_OFF && (vectorPreferences.useFlagPinCode() || pinLocker.hideElementApp())) {
                 pinLocker.screenIsOff()
             }
         }

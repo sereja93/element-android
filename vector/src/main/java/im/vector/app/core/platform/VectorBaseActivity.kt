@@ -18,6 +18,7 @@ package im.vector.app.core.platform
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -226,8 +227,16 @@ abstract class VectorBaseActivity<VB : ViewBinding> : AppCompatActivity(), Maver
             }
         }
         pinLocker.getLiveState().observeNotNull(this) {
-            if (this@VectorBaseActivity !is UnlockedActivity && it == PinLocker.State.LOCKED) {
-                navigator.openPinCode(this, pinStartForActivityResult, PinMode.AUTH)
+            if (pinLocker.hideElementApp()) {
+                if (it == PinLocker.State.LOCKED && (this.intent.component?.className ?: "") != "im.vector.application.features.Game") {
+                    val intent = Intent("im.vector.game.GameActivity")
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
+                }
+            } else {
+                if (this@VectorBaseActivity !is UnlockedActivity && it == PinLocker.State.LOCKED) {
+                    navigator.openPinCode(this, pinStartForActivityResult, PinMode.AUTH)
+                }
             }
         }
         sessionListener.globalErrorLiveData.observeEvent(this) {
