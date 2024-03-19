@@ -75,7 +75,6 @@
         app:layout_constraintTop_toBottomOf="@+id/rl" />
 
     <View
-        android:background="@color/black"
         android:id="@+id/start"
         android:layout_width="80dp"
         android:layout_height="80dp"
